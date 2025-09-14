@@ -1,0 +1,52 @@
+---
+
+# obtained from
+# - https://documentation.wazuh.com/current/user-manual/capabilities/active-response/ar-use-cases/blocking-ssh-brute-force.html
+
+# make sure the firewall-drop module is enabled in the wazuh-server
+# add active response when ssh brute force is detected
+# restart wazuh-server
+
+- name: "Ensure firewall-drop module is enabled in wazuh-server"
+  ansible.builtin.blockinfile:
+    path: /var/ossec/etc/ossec.conf
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK: enable module firewall-drop"
+    block: |
+      <!-- Ensure firewall drop module is enabled -->
+      <ossec_config>
+        <command>
+          <name>firewall-drop</name>
+          <executable>firewall-drop</executable>
+          <timeout_allowed>yes</timeout_allowed>
+        </command>
+      </ossec_config>
+  become: true
+  when: inventory_hostname in groups["wazuh_server"]
+
+- name: "Add active response to block SSH brute force"
+  ansible.builtin.blockinfile:
+    path: /var/ossec/etc/ossec.conf
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK: add active response to block SSH brute force"
+    block: |
+      <!-- Add active response to block SSH brute force. Uses module firewall-drop -->
+      <ossec_config>
+        <active-response>
+          <disabled>no</disabled>
+          <command>firewall-drop</command>
+          <location>local</location>
+          <rules_id>5763</rules_id>
+          <timeout>180</timeout>
+        </active-response>
+      </ossec_config>
+  become: true
+  when: inventory_hostname in groups["wazuh_server"]
+
+- name: "Restart wazuh manager"
+  ansible.builtin.systemd_service:
+    name: wazuh-manager
+    state: restarted
+  become: true
