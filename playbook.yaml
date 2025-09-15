@@ -9,3 +9,8 @@
   hosts: wazuh_agents
   roles:
     - ufw
+
+- name: "Disable root SSH login"
+  hosts: wazuh_agents
+  roles:
+    - ./roles/cis-benchmark/Ubuntu/
