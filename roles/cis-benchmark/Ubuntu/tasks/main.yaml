@@ -1,4 +1,7 @@
 ---
 
+- name: "Run CIS benchmark 5.1.1: set correct file permissions for sshd_config"
+  ansible.builtin.include_tasks: "./5-1-1.yaml"
+
 - name: "Run CIS benchmark 5.1.20: Disable root SSH login"
   ansible.builtin.include_tasks: "./5-1-20.yaml"
