@@ -1,4 +1,11 @@
+---
+
 - name: "Block ssh brute force"
   hosts: wazuh_server
   roles:
     - block-ssh-brute-force
+
+- name: "Setup ufw firewall rules"
+  hosts: wazuh_agents
+  roles:
+    - ufw
