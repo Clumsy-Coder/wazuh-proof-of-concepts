@@ -1,0 +1,59 @@
+---
+
+# set firewall rules using 'ufw'
+#
+# var `ufw` is imported in the playbook
+
+- ansible.builtin.include_vars: ../vars/ufw.yaml
+
+- name: "Install ufw via apt"
+  ansible.builtin.apt:
+    update_cache: true
+    name: "ufw"
+    state: present
+  when:
+    - ansible_os_family == "Debian"
+    - inventory_hostname in groups["wazuh_agents"]
+  become: true
+
+- name: "Disable ufw"
+  community.general.ufw:
+    state: disabled
+  when:
+    - inventory_hostname in groups["wazuh_agents"]
+  become: true
+
+- name: "Allow outgoing traffic as default"
+  community.general.ufw:
+    direction: outgoing
+    policy: allow
+  when:
+    - inventory_hostname in groups["wazuh_agents"]
+  become: true
+
+- name: "Deny incoming traffic as default"
+  community.general.ufw:
+    direction: incoming
+    policy: deny
+  when:
+    - inventory_hostname in groups["wazuh_agents"]
+  become: true
+
+- name: "Allow port number"
+  community.general.ufw:
+    rule: limit
+    port: "{{ item.port_number }}"
+    comment: "{{ item.comment }}"
+  loop: "{{ ufw_allow_ports }}"
+  # loop_control:
+  #   label: "Allow '{{ item.comment }}' on port {{ item.port_number }}"
+  when:
+    - inventory_hostname in groups["wazuh_agents"]
+  become: true
+
+- name: "Enable ufw"
+  community.general.ufw:
+    state: enabled
+  when:
+    - inventory_hostname in groups["wazuh_agents"]
+  become: true

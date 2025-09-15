@@ -1,0 +1,7 @@
+---
+
+ufw_allow_ports:
+  - port_number: 22
+    comment: "SSH"
+  - port_number: 80
+    comment: "HTTP"
