@@ -1,0 +1,4 @@
+---
+
+- name: "Run CIS benchmark 5.1.20: Disable root SSH login"
+  ansible.builtin.include_tasks: "./5-1-20.yaml"
