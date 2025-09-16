@@ -24,6 +24,8 @@
       </ossec_config>
   become: true
   when: inventory_hostname in groups["wazuh_server"]
+  notify:
+    - restart-wazuh-manager
 
 - name: "Add active response to block SSH brute force"
   ansible.builtin.blockinfile:
@@ -44,9 +46,5 @@
       </ossec_config>
   become: true
   when: inventory_hostname in groups["wazuh_server"]
-
-- name: "Restart wazuh manager"
-  ansible.builtin.systemd_service:
-    name: wazuh-manager
-    state: restarted
-  become: true
+  notify:
+    - restart-wazuh-manager
