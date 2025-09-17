@@ -1,0 +1,8 @@
+---
+
+- name: "Block SQL injection"
+  hosts: all
+  handlers:
+    - ansible.builtin.import_tasks: ../handlers/main.yaml
+  roles:
+    - block-sql-injection
