@@ -14,7 +14,7 @@
   roles:
     - ufw
 
-- name: "Disable root SSH login"
+- name: "CIS benchmark"
   hosts: wazuh_agents
   handlers:
     - ansible.builtin.import_tasks: handlers/main.yaml
