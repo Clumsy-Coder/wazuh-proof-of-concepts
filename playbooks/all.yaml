@@ -27,3 +27,10 @@
     - ansible.builtin.import_tasks: ../handlers/main.yaml
   roles:
     - block-sql-injection
+
+- name: "Detect unauthorized processes"
+  hosts: all
+  handlers:
+    - ansible.builtin.import_tasks: ../handlers/main.yaml
+  roles:
+    - detect-unauthorized-processes
