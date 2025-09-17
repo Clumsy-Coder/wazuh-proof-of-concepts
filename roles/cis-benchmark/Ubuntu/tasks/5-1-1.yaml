@@ -9,7 +9,7 @@
 # - https://learn.cisecurity.org/l/799323/2025-06-10/4vddgt
 #   - section 5.1.1
 
-- name: "Set /etc/ssh/sshd_config file permission to 600"
+- name: "5.1.1: Set /etc/ssh/sshd_config file permission to 600"
   ansible.builtin.file:
     path: /etc/ssh/sshd_config
     owner: root

@@ -9,7 +9,7 @@
 # - https://learn.cisecurity.org/l/799323/2025-06-10/4vddgt
 #   - section 5.1.20
 
-- name: "Disable root SSH login"
+- name: "5.1.20: Disable root SSH login"
   ansible.builtin.blockinfile:
     path: /etc/ssh/sshd_config
     append_newline: true
