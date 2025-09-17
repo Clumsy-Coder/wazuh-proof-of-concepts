@@ -3,6 +3,7 @@
 # run all task files within this directory
 # obtained from
 # - https://stackoverflow.com/a/68074849/3053548
+# - https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_delegation.html#delegating-tasks
 
 - name: "Find all task files for role cis-benchmark/Ubuntu"
   ansible.builtin.find:
