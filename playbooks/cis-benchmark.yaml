@@ -1,0 +1,8 @@
+---
+
+- name: "CIS benchmark"
+  hosts: wazuh_agents
+  handlers:
+    - ansible.builtin.import_tasks: ../handlers/main.yaml
+  roles:
+    - ../roles/cis-benchmark/Ubuntu/
