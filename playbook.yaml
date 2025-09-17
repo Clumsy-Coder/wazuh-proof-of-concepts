@@ -2,15 +2,21 @@
 
 - name: "Block ssh brute force"
   hosts: wazuh_server
+  handlers:
+    - ansible.builtin.import_tasks: handlers/main.yaml
   roles:
     - block-ssh-brute-force
 
 - name: "Setup ufw firewall rules"
   hosts: wazuh_agents
+  handlers:
+    - ansible.builtin.import_tasks: handlers/main.yaml
   roles:
     - ufw
 
 - name: "Disable root SSH login"
   hosts: wazuh_agents
+  handlers:
+    - ansible.builtin.import_tasks: handlers/main.yaml
   roles:
     - ./roles/cis-benchmark/Ubuntu/
