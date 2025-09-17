@@ -1,0 +1,82 @@
+---
+
+# obtained from
+# - https://documentation.wazuh.com/current/proof-of-concept-guide/detect-unauthorized-processes-netcat.html
+
+# check running processes log on wazuh agent
+# restart wazuh-agent
+# install netcat
+# add rule to detect Netcat program
+# restart wazuh-manager
+
+- name: "Monitor process log on wazuh agent"
+  ansible.builtin.blockinfile:
+    path: /var/ossec/etc/ossec.conf
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK: monitor logs for unauthorized processes"
+    block: |
+      <!-- Monitor logs for unauthorized processes -->
+      <ossec_config>
+        <localfile>
+          <log_format>full_command</log_format>
+          <alias>process list</alias>
+          <command>ps -e -o pid,uname,command</command>
+          <frequency>30</frequency>
+        </localfile>
+      </ossec_config>
+  become: true
+  when: inventory_hostname in groups["wazuh_agents"]
+  notify:
+    - restart-wazuh-agent
+
+# - name: "Install ncat and nmap on wazuh agent"
+#   ansible.builtin.apt:
+#     update_cache: true
+#     name:
+#       - ncat
+#       - nmap
+#     state: present
+#   when:
+#     - ansible_os_family == "Debian"
+#     - inventory_hostname in groups["wazuh_agents"]
+#   become: true
+
+- name: "Add rule to detect running unauthorized processes on wazuh-manager"
+  ansible.builtin.blockinfile:
+    path: /var/ossec/etc/rules/detect-unauthorized-processes.xml
+    append_newline: true
+    prepend_newline: true
+    create: true
+    mode: '660'
+    owner: 'wazuh'
+    group: 'wazuh'
+    marker: "# {mark} ANSIBLE MANAGED BLOCK: rules for detecting unauthorized processes"
+    block: |
+      <!-- Rules for detecting unauthorized processes -->
+      <group name="ossec,">
+        <rule id="100050" level="0">
+          <if_sid>530</if_sid>
+          <match>^ossec: output: 'process list'</match>
+          <description>List of running processes.</description>
+          <group>process_monitor,</group>
+        </rule>
+
+        <rule id="100051" level="7" ignore="900">
+          <if_sid>100050</if_sid>
+          <match>nc -l</match>
+          <description>netcat listening for incoming connections.</description>
+          <group>process_monitor,</group>
+        </rule>
+
+        <rule id="100052" level="7" ignore="900">
+          <if_sid>100050</if_sid>
+          <match>nmap</match>
+          <description>nmap scanning the network/target.</description>
+          <group>process_monitor,</group>
+        </rule>
+      </group>
+  become: true
+  when: inventory_hostname in groups["wazuh_server"]
+  notify:
+    - restart-wazuh-manager
