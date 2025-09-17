@@ -1,0 +1,81 @@
+---
+
+# obtained from
+
+# make sure the firewall-drop module is enabled in the wazuh-manager
+# install Apache web server on the wazuh agent
+# add config in wazuh-agent to monitor apache logs
+# restart wazuh-agent
+# add active response to block SQL injection
+# restart wazuh manager
+
+- name: "Ensure firewall-drop module is enabled in wazuh-server"
+  ansible.builtin.blockinfile:
+    path: /var/ossec/etc/ossec.conf
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK: enable module firewall-drop"
+    block: |
+      <!-- Ensure firewall drop module is enabled -->
+      <ossec_config>
+        <command>
+          <name>firewall-drop</name>
+          <executable>firewall-drop</executable>
+          <timeout_allowed>yes</timeout_allowed>
+        </command>
+      </ossec_config>
+  become: true
+  when: inventory_hostname in groups["wazuh_server"]
+  notify:
+    - restart-wazuh-manager
+
+- name: "Install Apache web server on Ubuntu"
+  ansible.builtin.apt:
+    update_cache: true
+    name: apache2
+    state: present
+  when:
+    - ansible_os_family == "Debian"
+    - inventory_hostname in groups["wazuh_agents"]
+  become: true
+
+- name: "Add apache logs to wazuh-agent"
+  ansible.builtin.blockinfile:
+    path: /var/ossec/etc/ossec.conf
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK: add Apache logs to wazuh-agent"
+    block: |
+      <!-- Add Apache logs to wazuh-agent -->
+      <ossec_config>
+        <localfile>
+          <log_format>apache</log_format>
+          <location>/var/log/apache2/access.log</location>
+        </localfile>
+      </ossec_config>
+  become: true
+  when: inventory_hostname in groups["wazuh_agents"]
+  notify:
+    - restart-wazuh-agent
+
+- name: "Add active response to block SQL injection"
+  ansible.builtin.blockinfile:
+    path: /var/ossec/etc/ossec.conf
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK: add active response to block SQL injection"
+    block: |
+      <!-- Add active response to block SQL injection. Uses module firewall-drop -->
+      <ossec_config>
+        <active-response>
+          <disabled>no</disabled>
+          <command>firewall-drop</command>
+          <location>local</location>
+          <rules_id>31103</rules_id>
+          <timeout>180</timeout>
+        </active-response>
+      </ossec_config>
+  become: true
+  when: inventory_hostname in groups["wazuh_server"]
+  notify:
+    - restart-wazuh-manager
