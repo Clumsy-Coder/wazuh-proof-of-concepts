@@ -1,7 +1,37 @@
 ---
 
-- name: "Run CIS benchmark 5.1.1: set correct file permissions for sshd_config"
-  ansible.builtin.include_tasks: "./5-1-1.yaml"
+# run all task files within this directory
+# obtained from
+# - https://stackoverflow.com/a/68074849/3053548
 
-- name: "Run CIS benchmark 5.1.20: Disable root SSH login"
-  ansible.builtin.include_tasks: "./5-1-20.yaml"
+- name: "Find all task files for role cis-benchmark/Ubuntu"
+  ansible.builtin.find:
+    paths: "{{ role_path }}/tasks"
+    patterns: '*.yaml,*.yml'
+    recurse: true
+    excludes: "main.yaml"
+  register: file_list
+  delegate_to: localhost
+
+# - name: "print role path"
+#   ansible.builtin.debug:
+#     msg: "{{ role_path }}"
+
+# - name: show the yaml files present
+#   ansible.builtin.debug: msg="{{ item }}"
+#   loop: "{{ file_list.files | map(attribute='path') | list }}"
+
+- name: "Run CIS benchmark task files"
+  ansible.builtin.include_tasks: "{{ item }}"
+  loop: "{{ file_list.files | map(attribute='path') | list }}"
+  no_log: true
+
+###################################################################################################
+
+# run individual task file
+
+# - name: "Run CIS benchmark 5.1.1: set correct file permissions for sshd_config"
+#   ansible.builtin.include_tasks: "./5-1-1.yaml"
+
+# - name: "Run CIS benchmark 5.1.20: Disable root SSH login"
+#   ansible.builtin.include_tasks: "./5-1-20.yaml"
