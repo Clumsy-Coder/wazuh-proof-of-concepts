@@ -34,3 +34,10 @@
     - ansible.builtin.import_tasks: ../handlers/main.yaml
   roles:
     - detect-unauthorized-processes
+
+- name: "Block shellshock attempt"
+  hosts: all
+  handlers:
+    - ansible.builtin.import_tasks: ../handlers/main.yaml
+  roles:
+    - block-shellshock-attempt
