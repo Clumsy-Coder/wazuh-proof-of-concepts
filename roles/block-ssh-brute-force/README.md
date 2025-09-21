@@ -5,14 +5,14 @@ Wazuh proof of concept to block SSH brute force attempts
 This role will modify the wazuh manager to
 - enable module `firewall-drop`
 - run active response when multiple failed SSH attempts have been made
-- restart `wazuh-manager` service
+- restart **wazuh manager** service
 
 ## usage
 
 Go to the root of the repo and run the following command
 
 ```bash
-ansible-playbook ./playbook.yaml
+ANSIBLE_CONFIG=./ansible.cfg ansible-playbook ./playbooks/block-ssh-brute-force.yaml
 ```
 
 ## Testing SSH brute force blocking
