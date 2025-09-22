@@ -1,0 +1,26 @@
+---
+
+# CIS benchmark 5.1.8
+# Wazuh configuration assessment ID: 35647
+# Disable sshd X11 Forwarding
+#
+# obtained from
+# - https://downloads.cisecurity.org/#/
+# - https://learn.cisecurity.org/l/799323/2025-06-10/4vddgt
+#   - section 5.1.8
+
+- name: "5.1.8: Disable sshd X11 Forwarding"
+  ansible.builtin.blockinfile:
+    path: /etc/ssh/sshd_config
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK: disable X11 Forwarding"
+    block: DisableForwarding yes
+    validate: sshd -T -f %s
+  become: true
+  when:
+    - ansible_os_family == "Debian"
+    - inventory_hostname in groups["wazuh_agents"]
+  notify:
+    - restart-sshd
+    - restart-wazuh-agent
