@@ -1,0 +1,26 @@
+---
+
+# CIS benchmark 5.1.16
+# Wazuh configuration assessment ID: 35655
+# configure sshd MaxAuthTries
+#
+# obtained from
+# - https://downloads.cisecurity.org/#/
+# - https://learn.cisecurity.org/l/799323/2025-06-10/4vddgt
+#   - section 5.1.16
+
+- name: "5.1.16: configure sshd MaxAuthTries"
+  ansible.builtin.blockinfile:
+    path: /etc/ssh/sshd_config
+    append_newline: true
+    prepend_newline: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK: configure sshd MaxAuthTries"
+    block: MaxAuthTries 4
+    validate: sshd -T -f %s
+  become: true
+  when:
+    - ansible_os_family == "Debian"
+    - inventory_hostname in groups["wazuh_agents"]
+  notify:
+    - restart-sshd
+    - restart-wazuh-agent
