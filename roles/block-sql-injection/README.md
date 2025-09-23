@@ -16,7 +16,7 @@ This role will:
 Go to the root of the repo and run the following command
 
 ```bash
-ANSIBLE_CONFIG=./ansible.cfg ansible-playbook ./playbooks/block-sql-injection.yam
+ANSIBLE_CONFIG=./ansible.cfg ansible-playbook ./playbooks/block-sql-injection.yaml
 ```
 
 ## Testing SQL injection blocking
