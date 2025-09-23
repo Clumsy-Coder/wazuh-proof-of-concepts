@@ -1,0 +1,23 @@
+---
+
+# CIS benchmark 2.4.1.3
+# Wazuh configuration assessment ID: 35595
+# Ensure permissions on /etc/cron.hourly are configured
+#
+# obtained from
+# - https://downloads.cisecurity.org/#/
+# - https://learn.cisecurity.org/l/799323/2025-06-10/4vddgt
+#   - section 2.4.1.3
+
+- name: "2.4.1.3: Ensure permissions on /etc/cron.hourly are configured"
+  ansible.builtin.file:
+    path: /etc/cron.hourly
+    owner: root
+    group: root
+    mode: "700"
+  become: true
+  when:
+    - ansible_os_family == "Debian"
+    - inventory_hostname in groups["wazuh_agents"]
+  notify:
+    - restart-wazuh-agent
