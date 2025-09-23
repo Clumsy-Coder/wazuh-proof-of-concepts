@@ -49,3 +49,4 @@ ANSIBLE_CONFIG=./ansible.cfg ansible-playbook ./playbooks/all.yaml
 - [Wazuh proof of concepts](https://documentation.wazuh.com/current/proof-of-concept-guide/index.html)
 - [CIS benchmarks](https://downloads.cisecurity.org/#/)
 - [CIS benchmark Ubuntu 24.04 LTS](https://learn.cisecurity.org/l/799323/2025-06-10/4vddgt)
+- [Ansible CIS lockdown for Ubuntu 24.04 LTS](https://github.com/ansible-lockdown/UBUNTU24-CIS)
