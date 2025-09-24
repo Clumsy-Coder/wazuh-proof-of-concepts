@@ -44,6 +44,59 @@ To run all roles, run the following command
 ANSIBLE_CONFIG=./ansible.cfg ansible-playbook ./playbooks/all.yaml
 ```
 
+## How it works
+
+### Ansible groups
+
+Ansible groups are a way of grouping a list of target hosts under one entity. This allows Ansible to
+run a playbook, role or task to run for a specific target.
+
+Check
+- https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
+- https://docs.ansible.com/ansible/latest/inventory_guide/intro_patterns.html
+
+For this repo, Ansible has two groups of machines, `wazuh_server` and `wazuh_agents` defined in the host file `hosts.ini`
+
+This groupings can be used in the Ansible tasks to limit a certain command to run in wazuh manager and another command run on wazuh agent
+
+Ex: when running the role [ `block-shellshock-attempt` ](./roles/block-shellshock-attempt/tasks/main.yaml)
+
+It will
+
+1. Enable Wazuh module `firewall-drop` in **`wazuh_server`**
+2. Install Apache web server in **`wazuh_agent`**
+3. Add Apache web server logs to wazuh in **`wazuh_agent`**
+4. Add active response to block Shellshock attempt in **`wazuh_server`**
+5. Restart wazuh manager
+6. Restart wazuh agent
+
+Even though all the steps mentioned is placed in one file, some of the tasks are only meant for
+either `wazuh_server` or `wazuh_agent`.
+
+In order to only run a task in either of those groups, a `when` condition is required to limit the
+execution
+
+To limit running a task to `wazuh_server`, add the following to the task
+
+```yaml
+  when: inventory_hostname in groups["wazuh_server"]
+```
+
+To limit running a task to `wazuh_agent`, add the following to the task
+
+```yaml
+  when: inventory_hostname in groups["wazuh_agent"]
+```
+
+This will prevent running a task on a machine that is not designed for.
+
+In the future, when developing more roles and tasks, make sure to use these conditions to limit the
+task execution. Not using this condition will cause that task to run all machines (because there was no limit)
+
+Check https://serverfault.com/a/1074413/1308762 for more details
+
+---
+
 ## References
 
 - [Wazuh proof of concepts](https://documentation.wazuh.com/current/proof-of-concept-guide/index.html)
