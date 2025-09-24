@@ -6,17 +6,17 @@ Implementing [Wazuh proof of concepts](https://documentation.wazuh.com/current/p
 
 - Wazuh manager is installed and is able to connect to the internet
   - Wazuh VM: https://documentation.wazuh.com/current/deployment-options/virtual-machine/virtual-machine.html
-- Wazuh agent is installed to the target OS
-- python is installed on the current machine
-- ansible is installed on the current machine
+- Wazuh agent is installed to the target OS and is able to connect to the internet
+- Python is installed on the current machine
+- Ansible is installed on the current machine
   - https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pip
 
 ## Usage
 
-1. create SSH keys for wazuh manager and agents
-2. place the public SSH key to wazuh manager and agents accordingly
-3. add the wazuh manager IP address, username, location of private SSH key and sudo password in the section `[wazuh_server]` in the file `hosts.ini`
-4. add the wazuh agent IP address, username, location of private SSH key and sudo password in the section `[wazuh_agents]` in the file `hosts.ini`
+1. Create SSH keys for wazuh manager and agents
+2. Place the public SSH key to wazuh manager and agents accordingly
+3. Add the wazuh manager IP address, username, location of private SSH key and sudo password in the section `[wazuh_server]` in the file `hosts.ini`
+4. Add the wazuh agent IP address, username, location of private SSH key and sudo password in the section `[wazuh_agents]` in the file `hosts.ini`
 
 ### Running a specific role
 
@@ -30,7 +30,7 @@ To run a playbook, run the following command
 ANSIBLE_CONFIG=./ansible.cfg ansible-playbook ./playbooks/<playbook name>.yaml
 ```
 
-example
+Example
 
 ```bash
 ANSIBLE_CONFIG=./ansible.cfg ansible-playbook ./playbooks/ufw.yaml
