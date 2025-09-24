@@ -30,13 +30,13 @@ nc -l 8000 & sleep 30 ; kill $!
 or
 
 ```bash
-nmap -sS <IP address> -T0 & sleep 35 ; kill $!
+nmap <IP address> -T0 & sleep 35 ; kill $!
 ```
 
 example
 
 ```bash
-nmap -sS localhost -T0 & sleep 35 ; kill $!
+nmap localhost -T0 & sleep 35 ; kill $!
 ```
 
 After running the command, Wazuh will detect unauthorized processes are running and log them
