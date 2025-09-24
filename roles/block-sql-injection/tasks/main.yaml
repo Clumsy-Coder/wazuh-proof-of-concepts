@@ -25,7 +25,7 @@
         </command>
       </ossec_config>
   become: true
-  when: inventory_hostname in groups["wazuh_server"]
+  when: inventory_hostname in groups["wazuh_manager"]
   notify:
     - restart-wazuh-manager
 
@@ -76,6 +76,6 @@
         </active-response>
       </ossec_config>
   become: true
-  when: inventory_hostname in groups["wazuh_server"]
+  when: inventory_hostname in groups["wazuh_manager"]
   notify:
     - restart-wazuh-manager

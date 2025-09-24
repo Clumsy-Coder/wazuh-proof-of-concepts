@@ -15,7 +15,7 @@ Implementing [Wazuh proof of concepts](https://documentation.wazuh.com/current/p
 
 1. Create SSH keys for wazuh manager and agents
 2. Place the public SSH key to wazuh manager and agents accordingly
-3. Add the wazuh manager IP address, username, location of private SSH key and sudo password in the section `[wazuh_server]` in the file `hosts.ini`
+3. Add the wazuh manager IP address, username, location of private SSH key and sudo password in the section `[wazuh_manager]` in the file `hosts.ini`
 4. Add the wazuh agent IP address, username, location of private SSH key and sudo password in the section `[wazuh_agents]` in the file `hosts.ini`
 
 ### Running a specific role
@@ -55,7 +55,7 @@ Check
 - https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
 - https://docs.ansible.com/ansible/latest/inventory_guide/intro_patterns.html
 
-For this repo, Ansible has two groups of machines, `wazuh_server` and `wazuh_agents` defined in the host file `hosts.ini`
+For this repo, Ansible has two groups of machines, `wazuh_manager` and `wazuh_agents` defined in the host file `hosts.ini`
 
 This groupings can be used in the Ansible tasks to limit a certain command to run in wazuh manager and another command run on wazuh agent
 
@@ -63,23 +63,23 @@ Ex: when running the role [ `block-shellshock-attempt` ](./roles/block-shellshoc
 
 It will
 
-1. Enable Wazuh module `firewall-drop` in **`wazuh_server`**
+1. Enable Wazuh module `firewall-drop` in **`wazuh_manager`**
 2. Install Apache web server in **`wazuh_agent`**
 3. Add Apache web server logs to wazuh in **`wazuh_agent`**
-4. Add active response to block Shellshock attempt in **`wazuh_server`**
+4. Add active response to block Shellshock attempt in **`wazuh_manager`**
 5. Restart wazuh manager
 6. Restart wazuh agent
 
 Even though all the steps mentioned is placed in one file, some of the tasks are only meant for
-either `wazuh_server` or `wazuh_agent`.
+either `wazuh_manager` or `wazuh_agent`.
 
 In order to only run a task in either of those groups, a `when` condition is required to limit the
 execution
 
-To limit running a task to `wazuh_server`, add the following to the task
+To limit running a task to `wazuh_manager`, add the following to the task
 
 ```yaml
-  when: inventory_hostname in groups["wazuh_server"]
+  when: inventory_hostname in groups["wazuh_manager"]
 ```
 
 To limit running a task to `wazuh_agent`, add the following to the task

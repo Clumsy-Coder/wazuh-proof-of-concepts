@@ -1,7 +1,7 @@
 ---
 
 - name: "Block ssh brute force"
-  hosts: wazuh_server
+  hosts: wazuh_manager
   handlers:
     - ansible.builtin.import_tasks: ../handlers/main.yaml
   roles:
