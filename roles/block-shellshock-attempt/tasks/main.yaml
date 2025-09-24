@@ -37,7 +37,7 @@
     state: present
   when:
     - ansible_os_family == "Debian"
-    - inventory_hostname in groups["wazuh_agents"]
+    - inventory_hostname in groups["wazuh_agent"]
   become: true
 
 - name: "Add apache logs to wazuh-agent"
@@ -55,7 +55,7 @@
         </localfile>
       </ossec_config>
   become: true
-  when: inventory_hostname in groups["wazuh_agents"]
+  when: inventory_hostname in groups["wazuh_agent"]
   notify:
     - restart-wazuh-agent
 

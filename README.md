@@ -16,7 +16,7 @@ Implementing [Wazuh proof of concepts](https://documentation.wazuh.com/current/p
 1. Create SSH keys for wazuh manager and agents
 2. Place the public SSH key to wazuh manager and agents accordingly
 3. Add the wazuh manager IP address, username, location of private SSH key and sudo password in the section `[wazuh_manager]` in the file `hosts.ini`
-4. Add the wazuh agent IP address, username, location of private SSH key and sudo password in the section `[wazuh_agents]` in the file `hosts.ini`
+4. Add the wazuh agent IP address, username, location of private SSH key and sudo password in the section `[wazuh_agent]` in the file `hosts.ini`
 
 ### Running a specific role
 
@@ -55,7 +55,7 @@ Check
 - https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
 - https://docs.ansible.com/ansible/latest/inventory_guide/intro_patterns.html
 
-For this repo, Ansible has two groups of machines, `wazuh_manager` and `wazuh_agents` defined in the host file `hosts.ini`
+For this repo, Ansible has two groups of machines, `wazuh_manager` and `wazuh_agent` defined in the host file `hosts.ini`
 
 This groupings can be used in the Ansible tasks to limit a certain command to run in wazuh manager and another command run on wazuh agent
 

@@ -13,14 +13,14 @@
     state: present
   when:
     - ansible_os_family == "Debian"
-    - inventory_hostname in groups["wazuh_agents"]
+    - inventory_hostname in groups["wazuh_agent"]
   become: true
 
 - name: "Disable ufw"
   community.general.ufw:
     state: disabled
   when:
-    - inventory_hostname in groups["wazuh_agents"]
+    - inventory_hostname in groups["wazuh_agent"]
   become: true
 
 - name: "Allow outgoing traffic as default"
@@ -28,7 +28,7 @@
     direction: outgoing
     policy: allow
   when:
-    - inventory_hostname in groups["wazuh_agents"]
+    - inventory_hostname in groups["wazuh_agent"]
   become: true
 
 - name: "Deny incoming traffic as default"
@@ -36,7 +36,7 @@
     direction: incoming
     policy: deny
   when:
-    - inventory_hostname in groups["wazuh_agents"]
+    - inventory_hostname in groups["wazuh_agent"]
   become: true
 
 - name: "Allow port number"
@@ -48,12 +48,12 @@
   # loop_control:
   #   label: "Allow '{{ item.comment }}' on port {{ item.port_number }}"
   when:
-    - inventory_hostname in groups["wazuh_agents"]
+    - inventory_hostname in groups["wazuh_agent"]
   become: true
 
 - name: "Enable ufw"
   community.general.ufw:
     state: enabled
   when:
-    - inventory_hostname in groups["wazuh_agents"]
+    - inventory_hostname in groups["wazuh_agent"]
   become: true

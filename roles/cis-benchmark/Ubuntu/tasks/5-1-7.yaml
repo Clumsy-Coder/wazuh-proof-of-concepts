@@ -22,7 +22,7 @@
   become: true
   when:
     - ansible_os_family == "Debian"
-    - inventory_hostname in groups["wazuh_agents"]
+    - inventory_hostname in groups["wazuh_agent"]
   notify:
     - restart-sshd
     - restart-wazuh-agent
