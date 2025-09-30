@@ -33,7 +33,7 @@ Example
 
 
 ```bash
-curl -XGET "http://192.168.24.134/users/?id=SELECT+*+FROM+users";
+curl -XGET "http://192.168.204.128/users/?id=SELECT+*+FROM+users";
 ```
 
 After running the command, Wazuh will block the offending IP for 3 minutes to stop further attempts of SQL injection.

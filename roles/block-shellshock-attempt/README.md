@@ -30,7 +30,7 @@ sudo curl -H "User-Agent: () { :; }; /bin/cat /etc/passwd" <WEBSERVER_IP_ADDRESS
 example
 
 ```bash
-sudo curl -H "User-Agent: () { :; }; /bin/cat /etc/passwd" 192.168.24.134
+sudo curl -H "User-Agent: () { :; }; /bin/cat /etc/passwd" 192.168.204.128
 ```
 
 After running the command, Wazuh will block the offending IP for 3 minutes to stop further attempts of Shellshock.
