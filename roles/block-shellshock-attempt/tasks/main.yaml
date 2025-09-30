@@ -73,7 +73,7 @@
           <command>firewall-drop</command>
           <location>local</location>
           <rules_id>31168</rules_id>
-          <timeout>180</timeout>
+          <timeout>15</timeout>
         </active-response>
       </ossec_config>
   become: true
