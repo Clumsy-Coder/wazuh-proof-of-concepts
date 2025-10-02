@@ -30,17 +30,17 @@
   notify:
     - restart-wazuh-agent
 
-- name: "Install ncat and nmap on wazuh agent"
-  ansible.builtin.apt:
-    update_cache: true
-    name:
-      - ncat
-      - nmap
-    state: present
-  when:
-    - ansible_os_family == "Debian"
-    - inventory_hostname in groups["wazuh_agent"]
-  become: true
+# - name: "Install ncat and nmap on wazuh agent"
+#   ansible.builtin.apt:
+#     update_cache: true
+#     name:
+#       - ncat
+#       - nmap
+#     state: present
+#   when:
+#     - ansible_os_family == "Debian"
+#     - inventory_hostname in groups["wazuh_agent"]
+#   become: true
 
 - name: "Add rule to detect running unauthorized processes on wazuh-manager"
   ansible.builtin.blockinfile:
